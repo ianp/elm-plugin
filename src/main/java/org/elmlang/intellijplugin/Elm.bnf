@@ -142,20 +142,15 @@ function_declaration_left ::=
 operator_declaration_left ::=
     operator_as_function pattern*
 
-expression ::= list_of_operands (any_operator list_of_operands)* { methods = [getReferencesStream] }
+expression ::= list_of_operands (operator list_of_operands)* { methods = [getReferencesStream] }
 
 list_of_operands ::= [MINUS]operand+ { methods = [getReferencesStream] }
 
-private any_operator ::=
-    real_operator
-    | backticked_function
-private real_operator ::=
+private operator ::=
     OPERATOR
     | LIST_CONSTRUCTOR
     | MINUS
     | DOT
-backticked_function ::=
-    BACKTICK referenced_value BACKTICK { methods = [getReferencesStream] }
 
 private operand ::=
     literal
@@ -191,7 +186,7 @@ private referenced_value ::=
     | mixed_case_path
 
 operator_as_function ::=
-    LEFT_PARENTHESIS real_operator RIGHT_PARENTHESIS
+    LEFT_PARENTHESIS operator RIGHT_PARENTHESIS
 
 private tuple ::=
     unit
@@ -266,7 +261,7 @@ private parenthesed_pattern ::=
 anonymous_function ::= BACKSLASH pattern+ ARROW expression { methods = [getReferencesStream] }
 
 operator_config ::=
-    operator_config_keyword NUMBER_LITERAL any_operator
+    operator_config_keyword NUMBER_LITERAL operator
 private operator_config_keyword ::=
     INFIXL
     | INFIX

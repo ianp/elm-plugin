@@ -203,7 +203,7 @@ public class ElmFile extends PsiFileBase implements ElmWithValueDeclarations {
         for (PsiElement elem = this.getFirstChild(); elem != null; elem = elem.getNextSibling()) {
             if (elem instanceof ElmModuleDeclaration) {
                 return Optional.of((ElmModuleDeclaration) elem);
-            } else if (elem instanceof ElmImportClause) {
+            } else if (elem instanceof ElmImportsList) {
                 break;
             }
         }

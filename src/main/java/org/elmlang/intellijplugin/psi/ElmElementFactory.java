@@ -3,6 +3,7 @@ package org.elmlang.intellijplugin.psi;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.elmlang.intellijplugin.ElmFileType;
 import org.elmlang.intellijplugin.utils.ListUtils;
 import org.jetbrains.annotations.Nullable;
@@ -25,20 +26,16 @@ public class ElmElementFactory {
     @Nullable
     public static ElmLowerCaseId createLowerCaseId(Project project, String text) {
         final ElmFile file = createFile(project, String.format("%s=0", text));
-        return Optional.ofNullable(file.getFirstChild())
-                .filter(e -> e instanceof ElmValueDeclaration)
-                .flatMap(e -> Optional.ofNullable(((ElmValueDeclaration)e).getPattern()))
+        return Optional.ofNullable(PsiTreeUtil.findChildOfType(file, ElmValueDeclaration.class))
+                .flatMap(e -> Optional.ofNullable(e.getPattern()))
                 .flatMap(e -> ListUtils.head(e.getLowerCaseIdList()))
                 .orElse(null);
     }
 
     @Nullable
     public static ElmImportClause createImport(Project project, String moduleName) {
-        final ElmFile file = createFile(project, String.format("import %s", moduleName));
-        return Optional.ofNullable(file.getFirstChild())
-                .filter(e -> e instanceof ElmImportClause)
-                .map(e -> (ElmImportClause) e)
-                .orElse(null);
+        ElmFile file = createFile(project, String.format("import %s", moduleName));
+        return PsiTreeUtil.findChildOfType(file, ElmImportClause.class);
     }
 
     @Nullable
@@ -49,11 +46,8 @@ public class ElmElementFactory {
     @Nullable
     public static ElmImportClause createImportExposing(Project project, String moduleName, List<String> exposedNames) {
         String contents = String.join(", ", exposedNames);
-        final ElmFile file = createFile(project, String.format("import %s exposing (%s)", moduleName, contents));
-        return Optional.ofNullable(file.getFirstChild())
-                .filter(e -> e instanceof ElmImportClause)
-                .map(e -> (ElmImportClause) e)
-                .orElse(null);
+        ElmFile file = createFile(project, String.format("import %s exposing (%s)", moduleName, contents));
+        return PsiTreeUtil.findChildOfType(file, ElmImportClause.class);
     }
 
     @Nullable

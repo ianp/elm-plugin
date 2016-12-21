@@ -51,9 +51,11 @@
 // https://github.com/JetBrains/Grammar-Kit
 // https://github.com/JetBrains/Grammar-Kit/blob/master/HOWTO.md
 
-elmFile ::= blank* [module_declaration] import_item* declaration_item*
+elmFile ::= blank* [module_declaration] blank* imports_list declaration_item*
 
 private declaration_item ::= (declaration|blank)
+
+imports_list ::= import_item*
 
 private import_item ::= (import_clause|blank)
 

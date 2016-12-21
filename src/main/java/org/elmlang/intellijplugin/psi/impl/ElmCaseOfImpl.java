@@ -1,5 +1,7 @@
 package org.elmlang.intellijplugin.psi.impl;
 
+import com.intellij.lang.folding.FoldingDescriptor;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
@@ -17,4 +19,14 @@ public class ElmCaseOfImpl extends ElmPsiElement implements ElmCaseOf {
         }
         else super.accept(visitor);
     }
+
+    public FoldingDescriptor getFoldingDescriptor() {
+        return new FoldingDescriptor(getNode(), getTextRange());
+    }
+
+    public String getFoldingPlaceholderText() {
+        ElmCaseOfHeader header =  PsiTreeUtil.findChildOfType(this, ElmCaseOfHeader.class);
+        return header != null ? header.getText() : "case ... of";
+    }
+
 }

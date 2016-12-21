@@ -1,6 +1,7 @@
 package org.elmlang.intellijplugin.psi.impl;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.folding.FoldingDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiElement;
@@ -62,6 +63,30 @@ public class ElmPsiImplUtil {
             return node.getPsi();
         } else {
             return null;
+        }
+    }
+
+    public static FoldingDescriptor getFoldingDescriptor(ElmCaseOfBranch element) {
+        return new FoldingDescriptor(element.getNode(), element.getTextRange());
+    }
+
+    public static FoldingDescriptor getFoldingDescriptor(ElmValueDeclarationBase element) {
+        return new FoldingDescriptor(element.getNode(), element.getTextRange());
+    }
+
+    public static String getFoldingPlaceholderText(ElmCaseOfBranch element) {
+        return element.getPattern().getText();
+    }
+
+    public static String getFoldingPlaceholderText(ElmValueDeclarationBase element) {
+        if (element.getFunctionDeclarationLeft() != null) {
+            return element.getFunctionDeclarationLeft().getText();
+        } else if (element.getOperatorDeclarationLeft() != null) {
+            return element.getOperatorDeclarationLeft().getText();
+        } else if (element.getPattern() != null) {
+            return element.getPattern().getText();
+        } else {
+            return "...";
         }
     }
 

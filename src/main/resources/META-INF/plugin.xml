@@ -110,6 +110,9 @@
         <completion.contributor
                 language="Elm"
                 implementationClass="org.elmlang.intellijplugin.features.completion.ElmCompletionContributor"/>
+        <lang.foldingBuilder
+                language="Elm"
+                implementationClass="org.elmlang.intellijplugin.features.ElmFoldingBuilder"/>
         <spellchecker.support
                 language="Elm"
                 implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>

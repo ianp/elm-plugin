@@ -21,9 +21,11 @@ import static org.elmlang.intellijplugin.psi.ElmTypes.*;
 
 %state IN_COMMENT
 
+%x blockComment
+
 CRLF= (\n|\r|\r\n)
 WHITE_SPACE=[\ \t\f]
-LINE_COMMENT=("--")[^\r\n]*
+LINE_COMMENT_LEX=("--")[^\r\n]*
 IDENTIFIER_CHAR=[[:letter:][:digit:]_']
 HEX_CHAR=[[:digit:]A-Fa-f]
 LOWER_CASE_IDENTIFIER=[:lowercase:]{IDENTIFIER_CHAR}*
@@ -41,15 +43,14 @@ RESERVED=("hiding" | "export" | "foreign" | "deriving")
 <IN_COMMENT> {
     "{-" {
         commentLevel++;
-        return COMMENT_CONTENT;
+        return START_COMMENT;
     }
     "-}" {
         commentLevel--;
         if (commentLevel == 0) {
             yybegin(YYINITIAL);
-            return END_COMMENT;
         }
-        return COMMENT_CONTENT;
+        return END_COMMENT;
     }
     [^-{}]+ {
         return COMMENT_CONTENT;
@@ -175,7 +176,7 @@ RESERVED=("hiding" | "export" | "foreign" | "deriving")
     "`" {
         return BACKTICK;
     }
-    {CRLF}*"{-" {
+    "{-" {
         commentLevel = 1;
         yybegin(IN_COMMENT);
         return START_COMMENT;
@@ -204,8 +205,8 @@ RESERVED=("hiding" | "export" | "foreign" | "deriving")
     ({CRLF}+{WHITE_SPACE}+)+ {
         return TokenType.WHITE_SPACE;
     }
-    {CRLF}*{LINE_COMMENT} {
-        return LINE_COMMENT;
+    {CRLF}*{LINE_COMMENT_LEX} {
+        return LINE_COMMENT_LEX;
     }
     {OPERATOR} {
         return OPERATOR;

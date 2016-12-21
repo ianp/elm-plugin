@@ -53,9 +53,7 @@
 // https://github.com/JetBrains/Grammar-Kit
 // https://github.com/JetBrains/Grammar-Kit/blob/master/HOWTO.md
 
-elmFile ::= blank* [module_declaration] blank* imports_list declaration_item*
-
-private declaration_item ::= (declaration|blank)
+elmFile ::= blank* [module_declaration] blank* imports_list (declaration|blank)*
 
 imports_list ::= import_item* { methods = [getFoldingDescriptor getFoldingPlaceholderText]}
 
@@ -65,7 +63,8 @@ private blank ::=
     WHITE_SPACE
     | INDENTATION
     | FRESH_LINE
-    | comment
+    | line_comment
+    | block_comment
 
 module_declaration ::= [ EFFECT | PORT ] MODULE upper_case_path [ WHERE record ] EXPOSING exposed_values { methods = [getModuleName isExposingAll getReferencesStream] }
 
@@ -90,11 +89,9 @@ as_clause ::= AS upper_case_id
 
 exposing_clause ::= EXPOSING exposed_values { methods = [isExposingAll getReferencesStream] }
 
-comment ::=
-    LINE_COMMENT
-    | level_comment
+line_comment ::= LINE_COMMENT_LEX
 
-level_comment ::= START_COMMENT COMMENT_CONTENT* END_COMMENT
+block_comment ::= START_COMMENT (block_comment|COMMENT_CONTENT)* END_COMMENT
 
 private declaration ::=
     value_declaration

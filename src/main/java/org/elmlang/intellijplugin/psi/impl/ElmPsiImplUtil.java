@@ -4,6 +4,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -70,12 +71,25 @@ public class ElmPsiImplUtil {
         return new FoldingDescriptor(element.getNode(), element.getTextRange());
     }
 
+    public static FoldingDescriptor getFoldingDescriptor(ElmImportsList element) {
+        List<ElmImportClause> imports = element.getImportClauseList();
+        if (imports.isEmpty()) { return null; }
+        ElmImportClause first = imports.get(0);
+        ElmImportClause last = imports.get(imports.size() - 1);
+        return new FoldingDescriptor(element.getNode(),
+                new TextRange(first.getTextRange().getStartOffset(), last.getTextRange().getEndOffset()));
+    }
+
     public static FoldingDescriptor getFoldingDescriptor(ElmValueDeclarationBase element) {
         return new FoldingDescriptor(element.getNode(), element.getTextRange());
     }
 
     public static String getFoldingPlaceholderText(ElmCaseOfBranch element) {
         return element.getPattern().getText();
+    }
+
+    public static String getFoldingPlaceholderText(ElmImportsList element) {
+        return "imports (" + element.getImportClauseList().size() + ")";
     }
 
     public static String getFoldingPlaceholderText(ElmValueDeclarationBase element) {

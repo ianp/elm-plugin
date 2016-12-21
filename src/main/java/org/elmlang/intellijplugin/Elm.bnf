@@ -30,6 +30,8 @@
         "org.elmlang.intellijplugin.psi.ElmTypeAnnotationBase"
     implements("module_declaration|exposing_clause") =
         "org.elmlang.intellijplugin.psi.ElmExposingBase"
+    implements("imports_list") =
+        "org.elmlang.intellijplugin.psi.ElmFoldable"
 
     psiImplUtilClass="org.elmlang.intellijplugin.psi.impl.ElmPsiImplUtil"
 
@@ -55,7 +57,7 @@ elmFile ::= blank* [module_declaration] blank* imports_list declaration_item*
 
 private declaration_item ::= (declaration|blank)
 
-imports_list ::= import_item*
+imports_list ::= import_item* { methods = [getFoldingDescriptor getFoldingPlaceholderText]}
 
 private import_item ::= (import_clause|blank)
 

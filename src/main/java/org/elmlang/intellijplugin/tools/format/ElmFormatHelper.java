@@ -45,7 +45,7 @@ public class ElmFormatHelper {
                         builder.append(line).append("\n");
                     }
                     String formatted = builder.toString();
-                    if (!formatted.isEmpty()) {
+                    if (!formatted.isEmpty() && !formatted.equals(source)) {
                         ApplicationManager.getApplication().runWriteAction(() ->
                                 CommandProcessor.getInstance().runUndoTransparentAction(() -> document.setText(formatted)));
                     }

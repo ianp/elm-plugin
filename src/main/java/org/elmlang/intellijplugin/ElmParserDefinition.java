@@ -21,7 +21,9 @@ import org.jetbrains.annotations.NotNull;
 public class ElmParserDefinition implements ParserDefinition {
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
     // This is empty because we need to have everything available to the BNF grammar so that we can fold comments.
-    public static final TokenSet COMMENTS = TokenSet.create();
+    public static final TokenSet COMMENTS = TokenSet.create(
+            ElmTypes.LINE_COMMENT_LEX
+    );
 
     public static final IFileElementType FILE = new IFileElementType(Language.<ElmLanguage>findInstance(ElmLanguage.class));
 

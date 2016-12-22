@@ -67,6 +67,10 @@ public class ElmPsiImplUtil {
         }
     }
 
+    public static FoldingDescriptor getFoldingDescriptor(ElmBlockComment element) {
+        return new FoldingDescriptor(element.getNode(), element.getTextRange());
+    }
+
     public static FoldingDescriptor getFoldingDescriptor(ElmCaseOfBranch element) {
         return new FoldingDescriptor(element.getNode(), element.getTextRange());
     }
@@ -82,6 +86,11 @@ public class ElmPsiImplUtil {
 
     public static FoldingDescriptor getFoldingDescriptor(ElmValueDeclarationBase element) {
         return new FoldingDescriptor(element.getNode(), element.getTextRange());
+    }
+
+    public static String getFoldingPlaceholderText(ElmBlockComment element) {
+        List<ElmBlockCommentText> texts = element.getBlockCommentTextList();
+        return texts.isEmpty() ? "" : texts.get(0).getText().split("\\n")[0];
     }
 
     public static String getFoldingPlaceholderText(ElmCaseOfBranch element) {

@@ -32,6 +32,8 @@
         "org.elmlang.intellijplugin.psi.ElmExposingBase"
     implements("imports_list") =
         "org.elmlang.intellijplugin.psi.ElmFoldable"
+    implements("block_comment") =
+        "org.elmlang.intellijplugin.psi.ElmFoldable"
 
     psiImplUtilClass="org.elmlang.intellijplugin.psi.impl.ElmPsiImplUtil"
 
@@ -91,7 +93,10 @@ exposing_clause ::= EXPOSING exposed_values { methods = [isExposingAll getRefere
 
 line_comment ::= LINE_COMMENT_LEX
 
-block_comment ::= START_COMMENT (block_comment|COMMENT_CONTENT)* END_COMMENT
+block_comment ::= START_COMMENT (block_comment|block_comment_text)* END_COMMENT
+    { methods = [getFoldingDescriptor getFoldingPlaceholderText] }
+
+block_comment_text ::= COMMENT_CONTENT+
 
 private declaration ::=
     value_declaration

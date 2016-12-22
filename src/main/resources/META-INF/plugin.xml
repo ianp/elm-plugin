@@ -113,12 +113,29 @@
         <spellchecker.support
                 language="Elm"
                 implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
+        <applicationConfigurable
+                groupId="tools"
+                displayName="Elm Format"
+                id="preference.elm.tool.format"
+                instance="org.elmlang.intellijplugin.tools.format.ElmSettingsFormUI"/>
+        <applicationService serviceImplementation="org.elmlang.intellijplugin.tools.format.ElmFormatSettings"/>
         <additionalTextAttributes scheme="Default" file="colorSchemes/ElmDefault.xml"/>
         <additionalTextAttributes scheme="Darcula" file="colorSchemes/ElmDarcula.xml"/>
     </extensions>
 
     <actions>
-        <!-- Add your actions here -->
+        <action id="ElmFormatAction"
+            class="org.elmlang.intellijplugin.tools.format.ElmFormatAction"
+            text="Reformat with Elm Format"
+            description="Reformat the current file using Elm Format">
+          <add-to-group group-id="CodeMenu" anchor="last"/>
+        </action>
     </actions>
+
+    <application-components>
+      <component>
+        <implementation-class>org.elmlang.intellijplugin.tools.format.OnFileSaveComponent</implementation-class>
+      </component>
+    </application-components>
 
 </idea-plugin>

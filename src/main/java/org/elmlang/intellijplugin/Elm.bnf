@@ -161,7 +161,6 @@ private operand ::=
     | tuple_constructor
     | tuple
     | list
-    | list_range
     | record
     | if_else
     | case_of
@@ -200,8 +199,6 @@ unit ::=
 
 list ::=
     LEFT_SQUARE_BRACKET [<<non_empty_list expression>>] RIGHT_SQUARE_BRACKET { methods = [getReferencesStream] }
-list_range ::=
-    LEFT_SQUARE_BRACKET expression DOUBLE_DOT expression RIGHT_SQUARE_BRACKET { methods = [getReferencesStream] }
 
 record ::=
     LEFT_BRACE [[record_base] <<non_empty_list field>>] RIGHT_BRACE { methods = [getReferencesStream] }
